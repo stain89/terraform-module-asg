@@ -51,7 +51,66 @@ variable "security_groups_ids" {
 }
 
 variable "user_data" {
-  default     = ""
+  description = "The user data to provide when launching the instance. Do not pass gzip-compressed data via this argument; see user_data_base64 instead."
   type        = string
-  description = "Custom user data or configuration script that needs to be run at boot"
+  default     = null
+}
+
+variable "root_block_device" {
+  description = "Customize details about the root block device of the instance"
+  type        = list(map(string))
+  default     = []
+}
+
+variable "ebs_optimized" {
+  description = "If true, the launched EC2 instance will be EBS-optimized"
+  type        = bool
+  default     = false
+}
+
+variable "ebs_block_device" {
+  description = "Additional EBS block devices to attach to the instance"
+  type        = list(map(string))
+  default     = []
+}
+
+variable "min_size" {
+  description = "Min number of instances in ASG"
+  default     = 1
+  type        = number
+}
+
+variable "max_size" {
+  description = "Max number of instances in ASG"
+  default     = 1
+  type        = number
+}
+
+variable "load_balancers" {
+  description = "A list of elastic load balancer names to add to the autoscaling group names"
+  type        = list(string)
+  default     = []
+}
+
+variable "default_cooldown" {
+  description = "The amount of time, in seconds, after a scaling activity completes before another scaling activity can start"
+  type        = number
+  default     = 300
+}
+
+variable "health_check_grace_period" {
+  description = "Time (in seconds) after instance comes into service before checking health"
+  type        = number
+  default     = 300
+}
+
+variable "health_check_type" {
+  description = "Controls how health checking is done. Values are - EC2 and ELB"
+  type        = string
+  default     = "ELB"
+}
+variable "force_delete" {
+  description = "Allows deleting the autoscaling group without waiting for all instances in the pool to terminate."
+  type        = bool
+  default     = false
 }
